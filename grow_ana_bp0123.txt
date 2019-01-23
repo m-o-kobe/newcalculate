@@ -1,0 +1,247 @@
+
+Call:
+lm(formula = growth ~ dbh01 + crd1 + crd2 + crd3 + crd4 + crd5 + 
+    crd6 + crd7 + crd8 + crd9 + kabudachi, data = data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.19469 -0.05333 -0.00752  0.04919  0.43225 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  9.787e-02  1.309e-02   7.475 3.42e-13 ***
+dbh01        5.496e-04  1.300e-03   0.423    0.673    
+crd1         8.089e-05  1.230e-04   0.658    0.511    
+crd2        -1.268e-05  5.025e-04  -0.025    0.980    
+crd3         4.707e-06  5.882e-04   0.008    0.994    
+crd4        -7.938e-04  6.229e-04  -1.274    0.203    
+crd5        -1.189e-03  8.211e-04  -1.448    0.148    
+crd6        -8.814e-04  9.462e-04  -0.932    0.352    
+crd7         7.330e-04  9.693e-04   0.756    0.450    
+crd8         5.439e-04  1.141e-03   0.477    0.634    
+crd9        -2.182e-04  1.084e-03  -0.201    0.841    
+kabudachi   -5.185e-06  5.997e-06  -0.865    0.388    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.109 on 507 degrees of freedom
+Multiple R-squared:  0.01728,	Adjusted R-squared:  -0.004046 
+F-statistic: 0.8102 on 11 and 507 DF,  p-value: 0.6299
+
+Start:  AIC=-2288.66
+growth ~ dbh01 + crd1 + crd2 + crd3 + crd4 + crd5 + crd6 + crd7 + 
+    crd8 + crd9 + kabudachi
+
+            Df Sum of Sq    RSS     AIC
+- crd3       1 0.0000008 6.0250 -2290.7
+- crd2       1 0.0000076 6.0250 -2290.7
+- crd9       1 0.0004816 6.0254 -2290.6
+- dbh01      1 0.0021243 6.0271 -2290.5
+- crd8       1 0.0027023 6.0277 -2290.4
+- crd1       1 0.0051397 6.0301 -2290.2
+- crd7       1 0.0067957 6.0318 -2290.1
+- kabudachi  1 0.0088815 6.0338 -2289.9
+- crd6       1 0.0103127 6.0353 -2289.8
+- crd4       1 0.0192980 6.0443 -2289.0
+<none>                   6.0250 -2288.7
+- crd5       1 0.0249082 6.0499 -2288.5
+
+Step:  AIC=-2290.66
+growth ~ dbh01 + crd1 + crd2 + crd4 + crd5 + crd6 + crd7 + crd8 + 
+    crd9 + kabudachi
+
+            Df Sum of Sq    RSS     AIC
+- crd2       1 0.0000076 6.0250 -2292.7
+- crd9       1 0.0004840 6.0254 -2292.6
+- dbh01      1 0.0021380 6.0271 -2292.5
+- crd8       1 0.0027441 6.0277 -2292.4
+- crd1       1 0.0051515 6.0301 -2292.2
+- crd7       1 0.0068099 6.0318 -2292.1
+- kabudachi  1 0.0090601 6.0340 -2291.9
+- crd6       1 0.0103167 6.0353 -2291.8
+- crd4       1 0.0194728 6.0444 -2291.0
+<none>                   6.0250 -2290.7
+- crd5       1 0.0251771 6.0501 -2290.5
+
+Step:  AIC=-2292.66
+growth ~ dbh01 + crd1 + crd4 + crd5 + crd6 + crd7 + crd8 + crd9 + 
+    kabudachi
+
+            Df Sum of Sq    RSS     AIC
+- crd9       1 0.0005239 6.0255 -2294.6
+- dbh01      1 0.0021581 6.0271 -2294.5
+- crd8       1 0.0028438 6.0278 -2294.4
+- crd1       1 0.0052195 6.0302 -2294.2
+- crd7       1 0.0068210 6.0318 -2294.1
+- kabudachi  1 0.0091434 6.0341 -2293.9
+- crd6       1 0.0103339 6.0353 -2293.8
+- crd4       1 0.0195969 6.0446 -2293.0
+<none>                   6.0250 -2292.7
+- crd5       1 0.0253804 6.0504 -2292.5
+
+Step:  AIC=-2294.61
+growth ~ dbh01 + crd1 + crd4 + crd5 + crd6 + crd7 + crd8 + kabudachi
+
+            Df Sum of Sq    RSS     AIC
+- dbh01      1 0.0021050 6.0276 -2296.4
+- crd8       1 0.0025482 6.0280 -2296.4
+- crd1       1 0.0048627 6.0304 -2296.2
+- crd7       1 0.0069011 6.0324 -2296.0
+- crd6       1 0.0105658 6.0361 -2295.7
+- kabudachi  1 0.0123428 6.0378 -2295.6
+- crd4       1 0.0195627 6.0451 -2294.9
+<none>                   6.0255 -2294.6
+- crd5       1 0.0276858 6.0532 -2294.2
+
+Step:  AIC=-2296.43
+growth ~ crd1 + crd4 + crd5 + crd6 + crd7 + crd8 + kabudachi
+
+            Df Sum of Sq    RSS     AIC
+- crd8       1 0.0022975 6.0299 -2298.2
+- crd1       1 0.0048673 6.0325 -2298.0
+- crd7       1 0.0070553 6.0347 -2297.8
+- crd6       1 0.0100892 6.0377 -2297.6
+- kabudachi  1 0.0115532 6.0392 -2297.4
+- crd4       1 0.0205751 6.0482 -2296.7
+<none>                   6.0276 -2296.4
+- crd5       1 0.0274299 6.0550 -2296.1
+
+Step:  AIC=-2298.24
+growth ~ crd1 + crd4 + crd5 + crd6 + crd7 + kabudachi
+
+            Df Sum of Sq    RSS     AIC
+- crd1       1 0.0040674 6.0340 -2299.9
+- crd6       1 0.0080337 6.0379 -2299.5
+- crd7       1 0.0096384 6.0395 -2299.4
+- kabudachi  1 0.0109990 6.0409 -2299.3
+- crd4       1 0.0206660 6.0506 -2298.5
+<none>                   6.0299 -2298.2
+- crd5       1 0.0255876 6.0555 -2298.0
+
+Step:  AIC=-2299.89
+growth ~ crd4 + crd5 + crd6 + crd7 + kabudachi
+
+            Df Sum of Sq    RSS     AIC
+- crd6       1 0.0072504 6.0412 -2301.3
+- kabudachi  1 0.0106239 6.0446 -2301.0
+- crd7       1 0.0112367 6.0452 -2300.9
+- crd4       1 0.0180286 6.0520 -2300.3
+<none>                   6.0340 -2299.9
+- crd5       1 0.0263048 6.0603 -2299.6
+
+Step:  AIC=-2301.26
+growth ~ crd4 + crd5 + crd7 + kabudachi
+
+            Df Sum of Sq    RSS     AIC
+- kabudachi  1  0.007403 6.0486 -2302.6
+- crd7       1  0.010510 6.0517 -2302.4
+- crd4       1  0.020161 6.0614 -2301.5
+<none>                   6.0412 -2301.3
+- crd5       1  0.037164 6.0784 -2300.1
+
+Step:  AIC=-2302.63
+growth ~ crd4 + crd5 + crd7
+
+       Df Sum of Sq    RSS     AIC
+- crd7  1  0.015827 6.0644 -2303.3
+- crd4  1  0.016620 6.0652 -2303.2
+<none>              6.0486 -2302.6
+- crd5  1  0.051988 6.1006 -2300.2
+
+Step:  AIC=-2303.27
+growth ~ crd4 + crd5
+
+       Df Sum of Sq    RSS     AIC
+- crd4  1  0.012838 6.0773 -2304.2
+<none>              6.0644 -2303.3
+- crd5  1  0.043783 6.1082 -2301.5
+
+Step:  AIC=-2304.17
+growth ~ crd5
+
+       Df Sum of Sq    RSS     AIC
+<none>              6.0773 -2304.2
+- crd5  1  0.053591 6.1309 -2301.6
+
+Call:
+lm(formula = growth ~ crd5, data = data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.20338 -0.05549 -0.00856  0.04956  0.43705 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.097318   0.006828  14.253   <2e-16 ***
+crd5        -0.001493   0.000699  -2.135   0.0332 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.1084 on 517 degrees of freedom
+Multiple R-squared:  0.008741,	Adjusted R-squared:  0.006824 
+F-statistic: 4.559 on 1 and 517 DF,  p-value: 0.03322
+
+
+Call:
+lm(formula = growth ~ dbh01 + crd + kabudachi, data = data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.21375 -0.05386 -0.00745  0.04885  0.42815 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  8.920e-02  9.388e-03   9.501   <2e-16 ***
+dbh01        5.449e-04  1.284e-03   0.424    0.672    
+crd         -4.841e-05  9.174e-05  -0.528    0.598    
+kabudachi   -6.615e-06  4.989e-06  -1.326    0.185    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.1089 on 515 degrees of freedom
+Multiple R-squared:  0.003962,	Adjusted R-squared:  -0.00184 
+F-statistic: 0.6828 on 3 and 515 DF,  p-value: 0.5629
+
+Start:  AIC=-2297.68
+growth ~ dbh01 + crd + kabudachi
+
+            Df Sum of Sq    RSS     AIC
+- dbh01      1 0.0021346 6.1087 -2299.5
+- crd        1 0.0033013 6.1099 -2299.4
+- kabudachi  1 0.0208474 6.1274 -2297.9
+<none>                   6.1066 -2297.7
+
+Step:  AIC=-2299.49
+growth ~ crd + kabudachi
+
+            Df Sum of Sq    RSS     AIC
+- crd        1 0.0034985 6.1122 -2301.2
+- kabudachi  1 0.0197849 6.1285 -2299.8
+<none>                   6.1087 -2299.5
+
+Step:  AIC=-2301.2
+growth ~ kabudachi
+
+            Df Sum of Sq    RSS     AIC
+- kabudachi  1  0.018655 6.1309 -2301.6
+<none>                   6.1122 -2301.2
+
+Step:  AIC=-2301.62
+growth ~ 1
+
+
+Call:
+lm(formula = growth ~ 1, data = data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.21156 -0.05503 -0.01020  0.04985  0.43304 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 0.086865   0.004775   18.19   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.1088 on 518 degrees of freedom
+

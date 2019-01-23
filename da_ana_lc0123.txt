@@ -1,0 +1,184 @@
+
+Call:
+glm(formula = death ~ dbh01 + crd1 + crd2 + crd3 + crd4 + crd5 + 
+    crd6 + crd7 + crd8 + crd9 + kabudachi, family = binomial, 
+    data = data)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-2.75966   0.04008   0.37732   0.61884   1.88906  
+
+Coefficients: (1 not defined because of singularities)
+             Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -2.247668   0.315216  -7.131 1.00e-12 ***
+dbh01       -0.005396   0.011709  -0.461 0.644917    
+crd1         0.021639   0.009951   2.175 0.029656 *  
+crd2         0.002252   0.010732   0.210 0.833813    
+crd3         0.032791   0.015202   2.157 0.031010 *  
+crd4         0.078577   0.018340   4.284 1.83e-05 ***
+crd5         0.053649   0.018814   2.852 0.004351 ** 
+crd6         0.081796   0.020591   3.972 7.11e-05 ***
+crd7         0.051279   0.020662   2.482 0.013071 *  
+crd8         0.096788   0.023920   4.046 5.20e-05 ***
+crd9         0.088025   0.023754   3.706 0.000211 ***
+kabudachi          NA         NA      NA       NA    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 687.23  on 613  degrees of freedom
+Residual deviance: 517.90  on 603  degrees of freedom
+AIC: 539.9
+
+Number of Fisher Scoring iterations: 5
+
+Start:  AIC=539.9
+death ~ dbh01 + crd1 + crd2 + crd3 + crd4 + crd5 + crd6 + crd7 + 
+    crd8 + crd9 + kabudachi
+
+
+Step:  AIC=539.9
+death ~ dbh01 + crd1 + crd2 + crd3 + crd4 + crd5 + crd6 + crd7 + 
+    crd8 + crd9
+
+        Df Deviance    AIC
+- crd2   1   517.94 537.94
+- dbh01  1   518.11 538.11
+<none>       517.90 539.90
+- crd3   1   522.79 542.79
+- crd1   1   522.90 542.90
+- crd7   1   524.37 544.37
+- crd5   1   526.52 546.52
+- crd9   1   532.85 552.85
+- crd6   1   535.73 555.73
+- crd8   1   535.90 555.90
+- crd4   1   538.86 558.86
+
+Step:  AIC=537.94
+death ~ dbh01 + crd1 + crd3 + crd4 + crd5 + crd6 + crd7 + crd8 + 
+    crd9
+
+        Df Deviance    AIC
+- dbh01  1   518.14 536.14
+<none>       517.94 537.94
+- crd3   1   522.80 540.80
+- crd1   1   523.02 541.02
+- crd7   1   524.49 542.49
+- crd5   1   526.59 544.59
+- crd9   1   532.91 550.91
+- crd6   1   535.84 553.84
+- crd8   1   536.09 554.09
+- crd4   1   538.87 556.87
+
+Step:  AIC=536.14
+death ~ crd1 + crd3 + crd4 + crd5 + crd6 + crd7 + crd8 + crd9
+
+       Df Deviance    AIC
+<none>      518.14 536.14
+- crd3  1   522.94 538.94
+- crd1  1   523.37 539.37
+- crd7  1   524.49 540.49
+- crd5  1   526.75 542.75
+- crd9  1   532.92 548.92
+- crd6  1   535.93 551.93
+- crd8  1   536.26 552.26
+- crd4  1   538.87 554.87
+
+Call:
+glm(formula = death ~ crd1 + crd3 + crd4 + crd5 + crd6 + crd7 + 
+    crd8 + crd9, family = binomial, data = data)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-2.74877   0.04069   0.37784   0.61932   1.89254  
+
+Coefficients:
+             Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -2.253787   0.309348  -7.286 3.20e-13 ***
+crd1         0.021998   0.009924   2.217 0.026653 *  
+crd3         0.032490   0.015207   2.136 0.032643 *  
+crd4         0.077584   0.018202   4.262 2.02e-05 ***
+crd5         0.053643   0.018822   2.850 0.004372 ** 
+crd6         0.080231   0.020164   3.979 6.92e-05 ***
+crd7         0.050151   0.020405   2.458 0.013980 *  
+crd8         0.094838   0.023358   4.060 4.90e-05 ***
+crd9         0.086631   0.023529   3.682 0.000231 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 687.23  on 613  degrees of freedom
+Residual deviance: 518.14  on 605  degrees of freedom
+AIC: 536.14
+
+Number of Fisher Scoring iterations: 5
+
+
+Call:
+glm(formula = death ~ dbh01 + crd + kabudachi, family = binomial, 
+    data = data)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-2.77263   0.04001   0.46054   0.66315   1.77324  
+
+Coefficients: (1 not defined because of singularities)
+             Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -1.713423   0.285589  -6.000 1.98e-09 ***
+dbh01        0.013551   0.010730   1.263    0.207    
+crd          0.044280   0.004904   9.030  < 2e-16 ***
+kabudachi          NA         NA      NA       NA    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 687.23  on 613  degrees of freedom
+Residual deviance: 557.89  on 611  degrees of freedom
+AIC: 563.89
+
+Number of Fisher Scoring iterations: 5
+
+Start:  AIC=563.89
+death ~ dbh01 + crd + kabudachi
+
+
+Step:  AIC=563.89
+death ~ dbh01 + crd
+
+        Df Deviance    AIC
+- dbh01  1   559.49 563.49
+<none>       557.89 563.89
+- crd    1   666.00 670.00
+
+Step:  AIC=563.49
+death ~ crd
+
+       Df Deviance    AIC
+<none>      559.49 563.49
+- crd   1   687.23 689.23
+
+Call:
+glm(formula = death ~ crd, family = binomial, data = data)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-2.75434   0.03566   0.46997   0.67834   1.74371  
+
+Coefficients:
+             Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -1.631447   0.278482  -5.858 4.67e-09 ***
+crd          0.045912   0.004765   9.636  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 687.23  on 613  degrees of freedom
+Residual deviance: 559.49  on 612  degrees of freedom
+AIC: 563.49
+
+Number of Fisher Scoring iterations: 5
+
