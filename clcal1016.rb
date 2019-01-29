@@ -3,7 +3,12 @@ require "csv"
 time = Time.now
 srand(time.usec)
 plot="ctr"
-$targetspp="bp"
+$targetspp="pt"
+
+
+
+
+
 if plot=="ctr"
 	infile = File.open("ctrl0904.csv", "r")
 	jogai=484
@@ -62,8 +67,17 @@ trees.each do |target|
 	end
 end	
 kazu=Num.count-1
-CSV.open('n_ctr_1016bp.csv','w') do |test|
+CSV.open('n_'+plot+'_'+$targetspp+'_1016.csv','w') do |test|
 	for i in 0..kazu do
-		test << [Num[i], Xx[i],Yy[i],Spp[i],Dbh01[i],arei.Crd1[i],arei.Crd2[i],arei.Crd3[i],arei.Crd4[i],arei.Crd5[i],arei.Crd6[i],arei.Crd7[i],arei.Crd8[i],arei.Crd9[i],arei.Onaji1[i],arei.Onaji2[i],arei.Onaji3[i],arei.Onaji4[i],arei.Onaji5[i],arei.Onaji6[i],arei.Onaji7[i],arei.Onaji8[i],arei.Onaji9[i]]
+		if i>0 then
+			crd=arei.Crd1[i]+arei.Crd2[i]+arei.Crd3[i]+arei.Crd4[i]+arei.Crd5[i]+arei.Crd6[i]+arei.Crd7[i]+arei.Crd8[i]+arei.Crd9[i]
+			onaji=arei.Onaji1[i]+arei.Onaji2[i]+arei.Onaji3[i]+arei.Onaji4[i]+arei.Onaji5[i]+arei.Onaji6[i]+arei.Onaji7[i]+arei.Onaji8[i]+arei.Onaji9[i]
+			kanyu=1
+		else
+			crd="ds"
+			onaji="ss"
+			kanyu="recruit"
+		end	
+		test << [Num[i], Xx[i],Yy[i],Spp[i],Dbh01[i],kanyu,crd,onaji,arei.Crd1[i],arei.Crd2[i],arei.Crd3[i],arei.Crd4[i],arei.Crd5[i],arei.Crd6[i],arei.Crd7[i],arei.Crd8[i],arei.Crd9[i],arei.Onaji1[i],arei.Onaji2[i],arei.Onaji3[i],arei.Onaji4[i],arei.Onaji5[i],arei.Onaji6[i],arei.Onaji7[i],arei.Onaji8[i],arei.Onaji9[i]]
 	end
 end	
