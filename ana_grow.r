@@ -12,7 +12,7 @@ database<-rbind(buf1,buf2)
 #sink(out1,append=TRUE)
 
 data1.lm<-lm(formula = growth ~ dbh01 + crd1 + crd2 + crd3 + crd4 + crd5 + crd6 + crd7 + crd8 + crd9 + kabudachi, data = database)
-print("start")
+
 
 data1sum<-summary(data1.lm)
 print(data1sum)
@@ -31,21 +31,14 @@ print(data4sum)
 #column<-c("growth","dbh01","crd","kabudachi")
 #data5<-data[,column]
 #library(ggplot2)
-library(coefplot)
-# coef<- data4.step$coefficients
-# error<-summary(data4.step)$coefficients[,"Std. Error"]
-# lower<-coef-error
-# upper<-coef+error
-# label<-data4.step$x
-# pdf(out2)
-# print(label)
-# print(coef)
-# print(lower)
-# print(upper)
-# p <- ggplot(data4.step,aes(y=coefficients))
-# p<-p+geom_errorbar(aes(ymin =coefficients-coefficients[,"Std. Error"], ymax = coefficients+coefficients[,"Std. Error"]))
-# print("start")
-#p<-p+ scale_y_log10()
-pdf(out2)
-#print(p)
-coefplot(data4.step)
+
+coe <- data4sum$coefficient
+N <- nrow(database)
+aic <- AIC(data4.step)
+result <- cbind(coe,aic,N)
+print("439")
+result[2:nrow(result),5:6] <- ""
+
+write.table(matrix(c("",colnames(result)),nrow=1),out2,append=T,quote=F,sep=","
+,row.names=F,col.names=F)
+write.table(result,out2,append=T,quote=F,sep=",",row.names=T,col.names=F)
