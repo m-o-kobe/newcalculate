@@ -4,7 +4,7 @@
 #別のプロットの計算する時はxmaxなどの値の変更の必要がないか確認すること
 
 
-$targetspp="pt"
+$targetspp="pt"#ここで樹種を変える"pt"or"bp"or"lc"
 
 plot="int"
 
@@ -13,10 +13,10 @@ $cal="da"#"da"or"grow"
 
 
 if plot=="ctr"
-	infile = File.open("ctrl0115.csv", "r")
+	infile = File.open("ctrl0115.csv", "r")#ここにファイル名を入れる
 	#infile = File.open("test.csv", "r")
-	$jogai=484
-	$xmax=100.0
+	$jogai=484#計算から除外したい木はこのように表記
+	$xmax=100.0#プロットサイズ
 	$ymax=50.0
 	$xmin=0.0
 	$ymin=0.0
@@ -236,7 +236,7 @@ kazu=Num.count-1
 
 require "csv"
 
-CSV.open($cal+'_'+plot+'_'+$targetspp+'0121.csv','w') do |test|
+CSV.open($cal+'_'+plot+'_'+$targetspp+'0121.csv','w') do |test|#出力ファイル名変えたいならここ
 	for i in 0..kazu do
 		if i>0 then
 			crd=Crd1[i]+Crd2[i]+Crd3[i]+Crd4[i]+Crd5[i]+Crd6[i]+Crd7[i]+Crd8[i]+Crd9[i]

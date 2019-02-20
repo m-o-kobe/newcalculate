@@ -5,17 +5,19 @@
 require 'time'
 require'timeout'
 require "csv"
-
+year="01"
 plot="int"
+
+
 if plot=="ctr"
-	infile = File.open("ctrl0904.csv", "r")
+	infile = File.open("ctrl0115.csv", "r")
 	jogai=484
 	$xmax=100.0
 	$ymax=50.0
 	$xmin=0.0
 	$ymin=0.0
 elsif plot=="int"
-	infile = File.open("int0905.csv", "r")
+	infile = File.open("int0121.csv", "r")
 	jogai=484
 	$xmax=50.3
 	$ymax=50.0
@@ -135,9 +137,15 @@ infile.each do |line|#1行目で読み込んだinfileの1行目だけ取り除�
 		trees.push( Tree.new(line) )
 	end
 end
-trees.delete_if{
-	|tree| tree.dbh01==0.0
-}
+if year=="01" then
+	trees.delete_if{
+		|tree| tree.dbh01==0.0
+	}
+elsif year=="04" then
+	trees.delete_if{
+		|tree| tree.dbh04==0.0
+	}
+end
 betula=Array.new
 betula=trees.select{
 	|tree| tree.spp=="bp"
@@ -155,10 +163,20 @@ rescue Timeout::Error
   puts 'おっそーい！'       # タイムアウト発生時の処理
 end
 
-CSV.open('init_'+plot+'_'+'1212.csv','w') do |test|
+CSV.open('init_'+plot+year+'_'+'0214.csv','w') do |test|
 	test << ["#plot",plot]
 	test<<["#x","y","sp","age","mysize","tag","sprout"]
-	trees.each do |tree|
-		test << [tree.x,tree.y,tree.spp,0,tree.dbh01,tree.num,tree.sprout]
-	end
+	if year=="01" then
+		trees.each do |tree|
+			if tree.spp!=4 then
+				test << [tree.x-$xmin,tree.y-$ymin,tree.spp,0,tree.dbh01,tree.num,tree.sprout]
+			end
+		end
+	elsif year=="04"
+		trees.each do |tree|
+			if tree.spp!=4 then
+				test << [tree.x-$xmin,tree.y-$ymin,tree.spp,0,tree.dbh04,tree.num,tree.sprout]
+			end
+		end
+	end 
 end
