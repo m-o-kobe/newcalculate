@@ -1,17 +1,6 @@
-#たぶん完全版1mおきに全部ばらばらにcrdがとれる
-#樹種ごとに集計
-#樹種名入れる
-#別のプロットの計算する時はxmaxなどの値の変更の必要がないか確認すること
-
-
 $targetspp="pt"#ここで樹種を変える"pt"or"bp"or"lc"
-
 plot="int"
-
-
 $cal="da"#"da"or"grow"
-
-
 if plot=="ctr"
 	infile = File.open("ctrl0115.csv", "r")#ここにファイル名を入れる
 	#infile = File.open("test.csv", "r")
@@ -30,7 +19,6 @@ elsif plot=="int"
 end
 $xmid=$xmin+($xmax-$xmin)/2
 $ymid=$ymin+($ymax-$ymin)/2
-
 class Tree #クラスTreeを定義
 	attr_accessor :num, :x, :y, :spp, :dbh01, :dbh04, :hgt, :sprout#インスタンス変数を読み書きするためのアクセサメソッドを定義
 	def initialize( line ) #オブジェクト作成時必ず実行される処理.()内をlineに読み込む
@@ -45,21 +33,17 @@ class Tree #クラスTreeを定義
 		@hgt = buf[6].to_f
 		@sprout=buf[7].to_i
 	end
-
-	
 end
 def dgrw(dbh04,dbh01)#dgrwは成長量
 		return (dbh04-dbh01)/3
 end
-	
+
 def sq (_flt)
 	return _flt * _flt
 end
 def dist( tree_a, tree_b )
 	return Math::sqrt(sq(tree_a.x - tree_b.x) + sq(tree_a.y - tree_b.y))#木aと木bの距離。sqは上で定義されている
 end
-
-
 def edge_effect( a, x, y )#エッジ効果は林縁部にかかる効果
 	if  y > x	# yがxより大きかったらxとyを入れ替えるためのif　よって常にx>y
 		_tmp = x
@@ -85,16 +69,13 @@ def edge_effect( a, x, y )#エッジ効果は林縁部にかかる効果
 		end
 	end
 end
-	
 def death(dbh04)
 	if dbh04==0
 		return 0
 	else
 		return 1
 	end
-		
 end	
-
 def dorg(target)
 	if $cal=="grow"
 		if target.dbh04!=0.0&&target.spp.include?($targetspp)&&target.dbh01!=0.0&&target.x<=$xmax&&target.x>=$xmin&&target.y<=$ymax&&target.y>=$ymin&&target.num!=$jogai
@@ -106,8 +87,6 @@ def dorg(target)
 		end
 	end
 end
-
-
 ############## read file
 trees = Array.new#treesを配列として定義
 infile.each do |line|#1行目で読み込んだinfileの1行目だけ取り除いてTreeに入れ込む処理？
@@ -116,10 +95,7 @@ infile.each do |line|#1行目で読み込んだinfileの1行目だけ取り除�
 		trees.push( Tree.new(line) )
 	end
 end
-
 ############### Calculate
-
-
 Num=["num"]
 Xx=["x"]
 Yy=["y"]
@@ -139,13 +115,8 @@ Crd9=["crd9"]
 Kabudachi=["kabudachi"]
 Dgrw=["growth"]
 Death=["death"]
-
-
 trees.each do |target|
 	if dorg(target)==true
-
-	   
-	    
 		Num.push(target.num)
 		Xx.push (target.x)
 		Yy.push(target.y)
@@ -163,8 +134,6 @@ trees.each do |target|
 		else
 			edge_y=target.y-$ymin
 		end
-
-		
 		[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0].each do |lim_dist|#9回作業を繰り返す
 			efct = 0.0
 			kabu=0.0
@@ -172,8 +141,6 @@ trees.each do |target|
 				if obj.num != target.num#obj.num≠target.numberならば･･･
 					_dist =dist(target, obj)#targetとobjの距離を_distで返す
 					if _dist<lim_dist&&_dist >=(lim_dist-1.0)#もしtargetとobjectの距離が0~9なら(lim_distより)
-						
-						
 						if target.sprout==obj.sprout&&target.sprout!=0
 							if _dist<=0.01
 								kabu+=obj.dbh01/0.01
@@ -187,17 +154,11 @@ trees.each do |target|
 								efct+=obj.dbh01/_dist
 							end
 						end
-						
-						
-						
 					end
 				end
 			end
 			mensekihi=(sq(lim_dist)*edge_effect(lim_dist, edge_x, edge_y)-sq(lim_dist-1.0)*edge_effect(lim_dist-1.0, edge_x, edge_y))/(sq(lim_dist)-sq(lim_dist-1.0))
-	
 			crd=efct/mensekihi
-		    
-	
 			if lim_dist==1
 				Crd1.push(crd)
 				Kabudachi.push(kabu)
@@ -220,22 +181,12 @@ trees.each do |target|
 		    end
 		    
 		end
-
-
 	Dgrw.push(dgrw(target.dbh04,target.dbh01))
 	Death.push(death(target.dbh04))
 	end	
-
-	
-		
-
-	
 end
 kazu=Num.count-1
-
-
 require "csv"
-
 CSV.open($cal+'_'+plot+'_'+$targetspp+'0121.csv','w') do |test|#出力ファイル名変えたいならここ
 	for i in 0..kazu do
 		if i>0 then
@@ -243,16 +194,10 @@ CSV.open($cal+'_'+plot+'_'+$targetspp+'0121.csv','w') do |test|#出力ファイ�
 		else
 			crd="crd"
 		end
-
 		if $cal=="grow" then
 			test << [Num[i], Xx[i],Yy[i],Spp[i],Dbh01[i],Dbh04[i],Hgt[i],Crd1[i],Crd2[i],Crd3[i],Crd4[i],Crd5[i],Crd6[i],Crd7[i],Crd8[i],Crd9[i],crd,Kabudachi[i],Dgrw[i]]
 		elsif $cal=="da"
 			test << [Num[i], Xx[i],Yy[i],Spp[i],Dbh01[i],Dbh04[i],Hgt[i],Crd1[i],Crd2[i],Crd3[i],Crd4[i],Crd5[i],Crd6[i],Crd7[i],Crd8[i],Crd9[i],crd,Kabudachi[i],Death[i]]
 		end
-			
-
 	end
-	
-
-
 end
