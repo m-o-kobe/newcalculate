@@ -1,7 +1,7 @@
-$targetspp="pt"#ここで樹種を変える"pt"or"bp"or"lc"
+$targetspp="lc"#ここで樹種を変える"pt"or"bp"or"lc"
 plot="ctr"
-$cal="da"#"da"or"grow"
-limlim=8
+$cal="grow"#"da"or"grow"
+limlim=3
 
 if plot=="ctr"
 	infile = File.open("ctrl0115.csv", "r")#ここにファイル名を入れる
@@ -22,7 +22,7 @@ end
 $xmid=$xmin+($xmax-$xmin)/2
 $ymid=$ymin+($ymax-$ymin)/2
 class Tree #クラスTreeを定義
-	attr_accessor :num, :x, :y, :spp, :dbh01, :dbh04, :hgt, :sprout#インスタンス変数を読み書きするためのアクセサメソッドを定義
+	attr_accessor :num, :x, :y, :spp, :dbh01, :dbh04, :hgt, :sprout, :edge_x,:edge_y,:dgrw,:death,:sc#インスタンス変数を読み書きするためのアクセサメソッドを定義
 	def initialize( line ) #オブジェクト作成時必ず実行される処理.()内をlineに読み込む
 		buf = line.chop.split(",")#lineの最後の文字を消し(chop),","を区切り文字とした配列をbufに読み込み
 		
@@ -34,6 +34,27 @@ class Tree #クラスTreeを定義
 		@dbh04=buf[5].to_f
 		@hgt = buf[6].to_f
 		@sprout=buf[7].to_i
+		@crd=Hash.new(0)
+		@sc=0
+		if @x>$xmid
+			@edge_x=$xmax-@x
+		else
+			@edge_x=@x-$xmin
+		end
+		if @y>$ymid
+			@edge_y=$ymax-@y
+		else
+			@edge_y=@y-$ymin
+		end
+
+	end
+	
+	def get_crd( order )
+		return @crd[order]
+	end
+	
+	def set_crd( order, value )
+		return @crd[order]=value
 	end
 end
 def dgrw(dbh04,dbh01)#dgrwは成長量
@@ -72,19 +93,24 @@ def edge_effect( a, x, y )#エッジ効果は林縁部にかかる効果
 	end
 end
 def death(dbh04)
-	if dbh04==0
+	if dbh04<=0.001
 		return 0
 	else
 		return 1
 	end
 end	
+def plotout(target)
+	if target.spp.include?($targetspp)&&target.x<=$xmax&&target.x>=$xmin&&target.y<=$ymax&&target.y>=$ymin
+		return true
+	end
+end
 def dorg(target)
 	if $cal=="grow"
-		if target.dbh04!=0.0&&target.spp.include?($targetspp)&&target.dbh01!=0.0&&target.x<=$xmax&&target.x>=$xmin&&target.y<=$ymax&&target.y>=$ymin&&target.num!=$jogai
+		if target.dbh04>=0.001&&target.dbh01>=0.001&&target.num!=$jogai&&plotout(target)
 			return true
 		end
 	elsif $cal=="da"
-		if target.dbh01!=0.0&&target.spp.include?($targetspp)&&target.x<=$xmax&&target.x>=$xmin&&target.y<=$ymax&&target.y>=$ymin
+		if target.dbh01>=0.001&&plotout(target)
 			return true
 		end
 	end
@@ -99,110 +125,73 @@ infile.each do |line|#1行目で読み込んだinfileの1行目だけ取り除�
 end
 
 ############### Calculate
-Num=Array.new
-Xx=Array.new
-Yy=Array.new
-Spp=Array.new
-Dbh01=Array.new
-Dbh04=Array.new
-Hgt=Array.new
-Crd = Array.new(trees.length).map{ Array.new(limlim) }
 
-Kabudachi=Array.new
-Dgrw=Array.new
-Death=Array.new
-count=0
-trees.each do |target|
-	if dorg(target)==true
-		Num.push(target.num)
-		Xx.push (target.x)
-		Yy.push(target.y)
-		Spp.push(target.spp)
-		Dbh01.push(target.dbh01)
-		Dbh04.push(target.dbh04)
-		Hgt.push(target.hgt)
-		if target.x>$xmid
-			edge_x=$xmax-target.x
-		else
-			edge_x=target.x-$xmin
-		end
-		if target.y>$ymid
-			edge_y=$ymax-target.y
-		else
-			edge_y=target.y-$ymin
-		end
-		for lim_dist in 1..limlim do
-			efct = 0.0
-			kabu=0.0
-			trees.each do | obj |#treesのデータがobjに格納された上で以下の処理を繰り返す
-				if obj.num != target.num#obj.num≠target.numberならば･･･
-					_dist =dist(target, obj)#targetとobjの距離を_distで返す
-					if _dist<lim_dist&&_dist >=(lim_dist-1.0)#もしtargetとobjectの距離が0~9なら(lim_distより)
-						if target.sprout==obj.sprout&&target.sprout!=0
-							if _dist<=0.01
-								kabu+=obj.dbh01/0.01
-							else
-								kabu+=obj.dbh01/_dist
-							end
+
+
+sel_trees=trees.select{|item| dorg(item)}
+sel_trees.each do|target|
+	crdcal=Array.new(limlim,0)
+	trees.each do | obj |#treesのデータがobjに格納された上で以下の処理を繰り返す
+		if obj.num != target.num#obj.num≠target.numberならば･･･
+			_dist =dist(target, obj)#targetとobjの距離を_distで返す
+			for lim_dist in 1..limlim do
+				if _dist<lim_dist&&_dist >=(lim_dist-1.0)#もしtargetとobjectの距離が0~9なら(lim_distより)
+					if target.sprout==obj.sprout&&target.sprout!=0
+						if _dist<=0.01
+							target.sc+=obj.dbh01/0.01
+							break
 						else
-							if _dist<=0.0
-								efct+=obj.dbh01/0.01
-							else
-								efct+=obj.dbh01/_dist
-							end
+							target.sc+=obj.dbh01/_dist
+							break
+						end
+					else
+						if _dist<=0.0
+							crdcal[lim_dist-1]+=obj.dbh01/0.01
+							break
+						else
+							crdcal[lim_dist-1]+=obj.dbh01/_dist
+							break
 						end
 					end
 				end
 			end
-			mensekihi=(sq(lim_dist)*edge_effect(lim_dist, edge_x, edge_y)-sq(lim_dist-1.0)*edge_effect(lim_dist-1.0, edge_x, edge_y))/(sq(lim_dist)-sq(lim_dist-1.0))
-			crd=efct/mensekihi
-			Crd[count][lim_dist.to_i-1]=crd
-			if lim_dist==1 then
-				Kabudachi[count]=kabu
-
-			end
-			
 		end
-	Dgrw.push(dgrw(target.dbh04,target.dbh01))
-	Death.push(death(target.dbh04))
-	count=count+1
 	end
-
+	for lim_dist in 1..limlim do
+		area_ratio=(sq(lim_dist)*edge_effect(lim_dist, target.edge_x, target.edge_y)-sq(lim_dist-1.0)*edge_effect(lim_dist-1.0, target.edge_x, target.edge_y))/(sq(lim_dist)-sq(lim_dist-1.0))
+		target.set_crd(lim_dist,crdcal[lim_dist-1]/area_ratio)
+		target.sc=target.sc/area_ratio
+	end
+	target.dgrw=(dgrw(target.dbh04,target.dbh01))
+	target.death=(death(target.dbh04))
 
 end
 
-kazu=Num.count-1
-Kekka1=Array.new(kazu+2).map{Array.new(8+limlim)}
-Kekka1[0]=["num","x","y","spp","dbh01","dbh04","hgt","sc",$cal,"Crd1"]
+
+
+Result=["num","x","y","spp","dbh01","dbh04","hgt","sc",$cal,"Crd1"]
 for i in 2..limlim do
-	Kekka1[0].push("Crd"+i.to_s)
-end
-
-
-for j in 0..kazu
-
-		Kekka1[j+1][0]=Num[j]
-		Kekka1[j+1][1]=Xx[j]
-		Kekka1[j+1][2]=Yy[j]
-		Kekka1[j+1][3]=Spp[j]
-		Kekka1[j+1][4]=Dbh01[j]
-		Kekka1[j+1][5]=Dbh04[j]
-		Kekka1[j+1][6]=Hgt[j]
-		Kekka1[j+1][7]=Kabudachi[j]
-		if $cal=="grow" then
-			Kekka1[j+1][8]=Dgrw[j]
-		elsif $cal=="da"
-			Kekka1[j+1][8]=Death[j]
-		end
-		for i in 0..limlim-1 do
-		
-			Kekka1[j+1][9+i]=Crd[j][i]
-		end
-
+	Result.push("Crd"+i.to_s)
 end
 require "csv"
-CSV.open($cal+'_'+plot+'_'+$targetspp+'0121.csv','w') do |test|#出力ファイル名変えたいならここ
-	for i in 0..kazu+1 do
-		test<<Kekka1[i]
+file_out = File.open($cal+'_'+plot+'_'+$targetspp+'0121.csv','w') #出力ファイル名変えたいならここ
+file_out.print Result.join(","), "\n"	
+sel_trees.each do |target|
+	file_out.print target.num, ","
+	file_out.print target.x, ","
+	file_out.print target.y, ","
+	file_out.print target.spp,","
+	file_out.print target.dbh01,","
+	file_out.print target.dbh04,","
+	file_out.print target.hgt,","
+	file_out.print target.sc,","
+	if $cal=="grow" then
+		file_out.print target.dgrw,","
+	elsif $cal=="da"
+		file_out.print target.death,","
 	end
+	for j in 1..limlim
+		file_out.print target.get_crd(j),","
+	end
+	file_out.print "\n"
 end
