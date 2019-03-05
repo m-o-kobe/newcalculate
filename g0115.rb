@@ -1,6 +1,8 @@
 $targetspp="pt"#ここで樹種を変える"pt"or"bp"or"lc"
-plot="int"
+plot="ctr"
 $cal="da"#"da"or"grow"
+limlim=8
+
 if plot=="ctr"
 	infile = File.open("ctrl0115.csv", "r")#ここにファイル名を入れる
 	#infile = File.open("test.csv", "r")
@@ -95,26 +97,21 @@ infile.each do |line|#1行目で読み込んだinfileの1行目だけ取り除�
 		trees.push( Tree.new(line) )
 	end
 end
+
 ############### Calculate
-Num=["num"]
-Xx=["x"]
-Yy=["y"]
-Spp=["spp"]
-Dbh01=["dbh01"]
-Dbh04=["dbh04"]
-Hgt=["hgt"]
-Crd1=["crd1"]
-Crd2=["crd2"]
-Crd3=["crd3"]
-Crd4=["crd4"]
-Crd5=["crd5"]
-Crd6=["crd6"]
-Crd7=["crd7"]
-Crd8=["crd8"]
-Crd9=["crd9"]
-Kabudachi=["kabudachi"]
+Num=Array.new
+Xx=Array.new
+Yy=Array.new
+Spp=Array.new
+Dbh01=Array.new
+Dbh04=Array.new
+Hgt=Array.new
+Crd = Array.new(trees.length).map{ Array.new(limlim) }
+
+Kabudachi=Array.new
 Dgrw=["growth"]
 Death=["death"]
+count=0
 trees.each do |target|
 	if dorg(target)==true
 		Num.push(target.num)
@@ -134,7 +131,7 @@ trees.each do |target|
 		else
 			edge_y=target.y-$ymin
 		end
-		[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0].each do |lim_dist|#9回作業を繰り返す
+		for lim_dist in 1..limlim do
 			efct = 0.0
 			kabu=0.0
 			trees.each do | obj |#treesのデータがobjに格納された上で以下の処理を繰り返す
@@ -159,45 +156,53 @@ trees.each do |target|
 			end
 			mensekihi=(sq(lim_dist)*edge_effect(lim_dist, edge_x, edge_y)-sq(lim_dist-1.0)*edge_effect(lim_dist-1.0, edge_x, edge_y))/(sq(lim_dist)-sq(lim_dist-1.0))
 			crd=efct/mensekihi
-			if lim_dist==1
-				Crd1.push(crd)
-				Kabudachi.push(kabu)
-			elsif lim_dist==2
-		    	Crd2.push(crd)
-		    elsif lim_dist==3
-		    	Crd3.push(crd)
-		    elsif lim_dist==4
-		    	Crd4.push(crd)
-	    	elsif lim_dist==5
-		    	Crd5.push(crd)
-		    elsif lim_dist==6
-		    	Crd6.push(crd)
-		    elsif lim_dist==7
-		    	Crd7.push(crd)
-		    elsif lim_dist==8
-		    	Crd8.push(crd)
-		    else
-		    	Crd9.push(crd)
-		    end
-		    
+			Crd[count][lim_dist.to_i-1]=crd
+			if lim_dist==1 then
+				Kabudachi[count]=kabu
+
+			end
+			
 		end
 	Dgrw.push(dgrw(target.dbh04,target.dbh01))
 	Death.push(death(target.dbh04))
-	end	
+	count=count+1
+	end
+
+
 end
+
 kazu=Num.count-1
+Kekka1=Array.new(kazu+2).map{Array.new(8+limlim)}
+Kekka1[0]=["num","x","y","spp","dbh01","dbh04","hgt","sc",$cal,"Crd1"]
+for i in 2..limlim do
+	Kekka1[0].push("Crd"+i.to_s)
+end
+
+
+for j in 0..kazu
+
+		Kekka1[j+1][0]=Num[j]
+		Kekka1[j+1][1]=Xx[j]
+		Kekka1[j+1][2]=Yy[j]
+		Kekka1[j+1][3]=Spp[j]
+		Kekka1[j+1][4]=Dbh01[j]
+		Kekka1[j+1][5]=Dbh04[j]
+		Kekka1[j+1][6]=Hgt[j]
+		Kekka1[j+1][7]=Kabudachi[j]
+		if $cal=="grow" then
+			Kekka1[j+1][8]=Dgrw[j]
+		elsif $cal=="da"
+			Kekka1[j+1][8]=Death[j]
+		end
+		for i in 0..limlim-1 do
+		
+			Kekka1[j+1][8+i]=Crd[j][i]
+		end
+
+end
 require "csv"
 CSV.open($cal+'_'+plot+'_'+$targetspp+'0121.csv','w') do |test|#出力ファイル名変えたいならここ
-	for i in 0..kazu do
-		if i>0 then
-			crd=Crd1[i]+Crd2[i]+Crd3[i]+Crd4[i]+Crd5[i]+Crd6[i]+Crd7[i]+Crd8[i]+Crd9[i]
-		else
-			crd="crd"
-		end
-		if $cal=="grow" then
-			test << [Num[i], Xx[i],Yy[i],Spp[i],Dbh01[i],Dbh04[i],Hgt[i],Crd1[i],Crd2[i],Crd3[i],Crd4[i],Crd5[i],Crd6[i],Crd7[i],Crd8[i],Crd9[i],crd,Kabudachi[i],Dgrw[i]]
-		elsif $cal=="da"
-			test << [Num[i], Xx[i],Yy[i],Spp[i],Dbh01[i],Dbh04[i],Hgt[i],Crd1[i],Crd2[i],Crd3[i],Crd4[i],Crd5[i],Crd6[i],Crd7[i],Crd8[i],Crd9[i],crd,Kabudachi[i],Death[i]]
-		end
+	for i in 0..kazu+1 do
+		test<<Kekka1[i]
 	end
 end
