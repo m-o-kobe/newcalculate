@@ -109,8 +109,8 @@ Hgt=Array.new
 Crd = Array.new(trees.length).map{ Array.new(limlim) }
 
 Kabudachi=Array.new
-Dgrw=["growth"]
-Death=["death"]
+Dgrw=Array.new
+Death=Array.new
 count=0
 trees.each do |target|
 	if dorg(target)==true
@@ -196,7 +196,7 @@ for j in 0..kazu
 		end
 		for i in 0..limlim-1 do
 		
-			Kekka1[j+1][8+i]=Crd[j][i]
+			Kekka1[j+1][9+i]=Crd[j][i]
 		end
 
 end
